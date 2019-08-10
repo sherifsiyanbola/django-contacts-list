@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contact
 from django.views.generic import ListView, DetailView
 from django.db.models import Q #Help in multiple filtering
+from django.views.generic.edit import CreateView
 
 
 # Create your views here.
@@ -43,3 +44,10 @@ def search(request):
         return render(request, 'search.html', context)
     else:
         return redirect('home')
+
+
+class ContactCreateView(CreateView):
+    model = Contact
+    template_name = 'create.html'
+    fields = ['name', 'email', 'phone', 'info', 'gender','image']
+    success_url = '/'
