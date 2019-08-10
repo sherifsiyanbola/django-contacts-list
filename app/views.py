@@ -56,4 +56,7 @@ class ContactUpdateView(UpdateView):
     model = Contact
     template_name = 'update.html'
     fields = ['name', 'email', 'phone', 'info', 'gender','image']
-    success_url = '/'
+    
+    def form_valid(self,form):
+        instance = form.save()
+        return redirect('detail', instance.pk)
