@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Q #Help in multiple filtering
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -19,12 +20,12 @@ from django.contrib.auth.forms import UserCreationForm
 #     }
 #     return render(request, 'detail.html', context)
 
-class HomePageView(ListView):
+class HomePageView(LoginRequiredMixin, ListView):
     template_name = 'index.html'
     model = Contact
     context_object_name = 'contacts'
 
-class ContactDetailView(DetailView):
+class ContactDetailView(LoginRequiredMixin, DetailView):
     template_name = 'detail.html'
     model = Contact
     context_object_name = 'contact'
@@ -47,13 +48,13 @@ def search(request):
         return redirect('home')
 
 
-class ContactCreateView(CreateView):
+class ContactCreateView(LoginRequiredMixin, CreateView):
     model = Contact
     template_name = 'create.html'
     fields = ['name', 'email', 'phone', 'info', 'gender','image']
     success_url = '/'
 
-class ContactUpdateView(UpdateView):
+class ContactUpdateView(LoginRequiredMixin, UpdateView):
     model = Contact
     template_name = 'update.html'
     fields = ['name', 'email', 'phone', 'info', 'gender','image']
@@ -62,7 +63,7 @@ class ContactUpdateView(UpdateView):
         instance = form.save()
         return redirect('detail', instance.pk)
 
-class ContactDeleteView(DeleteView):
+class ContactDeleteView(LoginRequiredMixin, DeleteView):
     model = Contact
     template_name = 'delete.html'
     success_url = '/'
