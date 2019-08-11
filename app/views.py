@@ -27,6 +27,10 @@ class HomePageView(LoginRequiredMixin, ListView):
     model = Contact
     context_object_name = 'contacts'
 
+    def get_queryset(self):
+        contacts = super().get_queryset()
+        return contacts.filter(manager=self.request.user)
+
 class ContactDetailView(LoginRequiredMixin, DetailView):
     template_name = 'detail.html'
     model = Contact
